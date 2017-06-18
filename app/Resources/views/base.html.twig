@@ -3,11 +3,95 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <style>
+        body { 
+          display: grid;
+          grid-template-areas: 
+            "header header header"
+            "nav article ads"
+            "footer footer footer";
+          grid-template-rows: 80px 1fr 150px;  
+          grid-template-columns: 20% 1fr 15%;
+          grid-row-gap: 10px;
+          grid-column-gap: 10px;
+          height: 100vh;
+          margin: 0;
+          background: gray;
+          }  
+        header, footer, article, nav, div {
+          padding: 1.2em;
+          background: white;
+          }
+        footer {
+            line-height: 70%;
+        }
+        #pageHeader {
+          grid-area: header;
+          }
+        #pageFooter {
+          grid-area: footer;
+          }
+        #mainArticle { 
+          grid-area: article;      
+          }
+        #mainNav { 
+          grid-area: nav; 
+          }
+        #siteAds { 
+          grid-area: ads; 
+          } 
+        /* Stack the layout on small devices/viewports. */
+        @media all and (max-width: 575px) {
+          body { 
+            grid-template-areas: 
+              "header"
+              "article"
+              "ads"
+              "nav"
+              "footer";
+            grid-template-rows: 80px 1fr 70px 1fr 150px;  
+            grid-template-columns: 1fr;
+         }
+        }
+        body {  font: 18px/1.5 Times new roman; }
+        h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
+        h1 { font-size: 36px; }
+        h2 { font-size: 21px; margin-bottom: 1em; }
+        p { margin: 0 0 1em 0; }
+        a { color: #0000F0; }
+        a:hover { text-decoration: none; }
+        code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
+        #wrapper { background: #FFF; margin: 1em auto; max-width: 800px; width: 95%; }
+        #container { padding: 2em; }
+        #welcome, #status { margin-bottom: 2em; }
+        #welcome h1 span { display: block; font-size: 75%; }
+        #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
+        #icon-book { display: none; }
+
+        @media (min-width: 768px) {
+            #wrapper { width: 80%; margin: 2em auto; }
+            #icon-book { display: inline-block; }
+            #status a, #next a { display: block; }
+
+            @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+            @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+            .sf-toolbar { opacity: 0; -webkit-animation: fade-in 1s .2s forwards; animation: fade-in 1s .2s forwards;}
+        }
         {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        </style>
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <header id="pageHeader"><h1>Pókerkéz</h1></header>
+      <article id="mainArticle"> {% block body %}{% endblock %}</article>
+      <nav id="mainNav"> {% block nav %}Nav{% endblock %}</nav>
+      <div id="siteAds"> {% block ads %}Ads{% endblock %}</div>
+      <footer id="pageFooter">
+          <p>Kazal Kolos</p>
+            <p>8230 Balatonfüred, Dózsa Gy. u. 11.</p>
+            <p>30/227-06-91</p>
+            <p>kolos@varazsbetu.hu</p>
+      </footer>
+     
+      {% block javascripts %}{% endblock %}
     </body>
 </html>
