@@ -20,11 +20,8 @@ class PakliTest extends TestCase
         
         foreach ($testelements as $elem) 
         {
-            unset($pakli);
             $pakli= new Pakli($elem['csomag']);
-                
-            $result = count($pakli->getTeljesPakli());
-
+            $result = $pakli->getLapokSzama();
             $this->assertEquals($elem['elvart'], $result);
         }
     }
@@ -62,12 +59,11 @@ class PakliTest extends TestCase
         
         foreach ($testelements as $elem) 
         {
-            unset($pakli);
             $pakli= new Pakli($elem['csomag']);
                 
             $lap=$pakli->EgyVeletlenLapotHuz();
             
-            $result=$pakli->UgyanilyenLapAPakliban($lap);
+            $result=$pakli->UgyanilyenLapEbbenAKeszletben($lap);
 
             $this->assertEquals($elem['elvart'], $result);
         }

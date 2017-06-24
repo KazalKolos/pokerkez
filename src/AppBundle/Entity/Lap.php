@@ -2,9 +2,11 @@
 
 namespace AppBundle\Entity;
 use Exception;
+use AppBundle\Entity\ILapTemplate;
 
 
-class Lap
+
+class Lap implements iLapTemplate
 {
         
     /**
@@ -21,13 +23,23 @@ class Lap
      * @lapertekek array
      */
     private $lapertekek;
+    
+    /**
+     * @lapid int
+     */
+    private $lapid;
+    
+    /**
+     * @lapid int
+     */
+    private static $szamlalo=0;
 
     
     function __construct(string $szin, string $nev)
     {
         $this->setSzin($szin);
         $this->setNev($nev);
-
+        $this->lapid=self::getSzamlalo();
     }
     
     
@@ -37,13 +49,12 @@ class Lap
         return $this->nev;
     }
     
-    public function setNev(string $nev)
+    private function setNev(string $nev)
     {
         $this->NevEllenor($nev);
         
         $this->nev = $nev;
         $this->lapertekek=$this->LapertekekSzamitasa();
-        
 
         return $this;
     }
@@ -56,7 +67,7 @@ class Lap
         return $this->szin;
     }
     
-    public function setSzin(string $szin)
+    private function setSzin(string $szin)
     {
         $this->SzinEllenor($szin);
         $this->szin = $szin;
@@ -69,6 +80,11 @@ class Lap
     {
         return $this->lapertekek;
     }
+        
+    public function getLapid():int
+    {
+        return $this->lapid;
+    }
     
     
     public function Leiras():string
@@ -80,7 +96,8 @@ class Lap
             $eredmeny.=($eredmeny!="" ? ", " : "");
             $eredmeny.=(string)$ertek;
         }
-        return "$this->szin $this->nev, A lap erteke: ($eredmeny)";
+        return "$this->lapid";
+        return "$this->lapid: $this->szin $this->nev ($eredmeny)";
     }
     
     
@@ -148,5 +165,10 @@ class Lap
     public function Egyforma(Lap $paramLap): bool
     {
         return ($this->szin==$paramLap->szin && $this->nev==$paramLap->nev);
+    }
+    
+    private static function getSzamlalo():int
+    {
+        return self::$szamlalo++;
     }
 }

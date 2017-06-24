@@ -35,15 +35,15 @@ class LapTest extends TestCase
     public function TesztLeirasElemekGeneralasa():array
     {
         $testelements=array();
-        //$testelements[]=['nev'=>"Esz",'szin'=>"Kor", 'remelt'=>"Kor Esz, A lap erteke: (1, 14)"];
-        //$testelements[]=['nev'=>"Asz",'szin'=>"Okor", 'remelt'=>"Okor Asz, A lap erteke: (1, 14)"];
-        $testelements[]=['nev'=>"2",'szin'=>"Karo", 'remelt'=>"Karo 2, A lap erteke: (2)"];
-        $testelements[]=['nev'=>"3",'szin'=>"Treff", 'remelt'=>"Treff 3, A lap erteke: (3)"];
-        $testelements[]=['nev'=>"5",'szin'=>"Pikk", 'remelt'=>"Pikk 5, A lap erteke: (5)"];
-        $testelements[]=['nev'=>"Jumbo",'szin'=>"Kor", 'remelt'=>"Kor Jumbo, A lap erteke: (11)"];
-        $testelements[]=['nev'=>"Dama",'szin'=>"Karo", 'remelt'=>"Karo Dama, A lap erteke: (12)"];
-        $testelements[]=['nev'=>"Asz",'szin'=>"Pikk", 'remelt'=>"Pikk Asz, A lap erteke: (1, 14)"];
-        $testelements[]=['nev'=>"Asz",'szin'=>"Kor", 'remelt'=>"Kor Asz, A lap erteke: (1, 14)"];
+        //$testelements[]=['nev'=>"Esz",'szin'=>"Kor", 'remelt'=>"Kor Esz (1, 14)"];
+        //$testelements[]=['nev'=>"Asz",'szin'=>"Okor", 'remelt'=>"Okor Asz (1, 14)"];
+        $testelements[]=['nev'=>"2",'szin'=>"Karo", 'remelt'=>"Karo 2 (2)"];
+        $testelements[]=['nev'=>"3",'szin'=>"Treff", 'remelt'=>"Treff 3 (3)"];
+        $testelements[]=['nev'=>"5",'szin'=>"Pikk", 'remelt'=>"Pikk 5 (5)"];
+        $testelements[]=['nev'=>"Jumbo",'szin'=>"Kor", 'remelt'=>"Kor Jumbo (11)"];
+        $testelements[]=['nev'=>"Dama",'szin'=>"Karo", 'remelt'=>"Karo Dama (12)"];
+        $testelements[]=['nev'=>"Asz",'szin'=>"Pikk", 'remelt'=>"Pikk Asz (1, 14)"];
+        $testelements[]=['nev'=>"Asz",'szin'=>"Kor", 'remelt'=>"Kor Asz (1, 14)"];
         
         return $testelements;
     }  

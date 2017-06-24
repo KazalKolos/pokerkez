@@ -2,14 +2,11 @@
 
 namespace AppBundle\Entity;
 use Exception;
+use AppBundle\Entity\iKartyakeszletInterface;
 use AppBundle\Entity\Lap;
 
-class Pakli
+class Pakli  extends Kartyakeszlet implements iPakliTemplate
 {
-    /**
-     * @lapok Lap array
-     */
-    private $lapok;
     
     /**
      * @csomagszam int
@@ -18,6 +15,7 @@ class Pakli
     
     function __construct(int $csomagszam) 
     {
+        parent::__construct();
         if($csomagszam<1 || $csomagszam>10)
         {
             throw new Exception("A jatekban legalabb 1, legfeljebb 10 csomag vehet reszt!");
@@ -26,14 +24,17 @@ class Pakli
         $this->PakliFeltoltese();
     }
     
+    
+    
     private function PakliFeltoltese()
     {
-        $this->lapok=array();
         for ($i=0;$i<$this->csomagszam;$i++)
         {
             $this->CsomagHozzaadasa();
         }
     }
+    
+    
     
     private function CsomagHozzaadasa()
     {
@@ -46,10 +47,6 @@ class Pakli
         }
     }
     
-    public function getTeljesPakli():array
-    {
-        return $this->lapok;
-    }
 
     
     public function EgyVeletlenLapotHuz():Lap 
@@ -60,16 +57,4 @@ class Pakli
         return $egylap;
     }
     
-    public function UgyanilyenLapAPakliban(Lap $lap):int 
-    {
-        $szamlalo=0;
-        foreach ($this->lapok as $pakliLap)
-        {
-            if($pakliLap->Egyforma($lap))
-            {
-                $szamlalo++;
-            }
-        }
-        return $szamlalo;
-    }
 }
