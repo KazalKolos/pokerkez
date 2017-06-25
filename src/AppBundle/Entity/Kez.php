@@ -18,9 +18,10 @@ class Kez extends Kartyakeszlet implements iKezTemplate
         //$agak= $this->lapok;
         $torzs=array();
         $ertek= $this->FaKereses($torzs);
+        echo $ertek->Leiras();
     }
     
-    private function Fakereses(array $torzs):string
+    private function Fakereses(array $torzs): Kezertek
     {
         $nemHasznalt=$this->NemHasznaltElemek($torzs);
         if (count($nemHasznalt)==0)
@@ -28,9 +29,16 @@ class Kez extends Kartyakeszlet implements iKezTemplate
             return $this->Ertekel($torzs);
         }
         
+        $ertek=new Kezertek(new Kartyakombinacio("ures", 0, "*,*;*,*;*,*;*,*;*,*"),[new Lap("Treff","2"),new Lap("Treff","2")]);
+        
         foreach ($nemHasznalt as $csomopont) 
         {
-            $ertek= $this->Fakereses($this->Array_hozzafuz($torzs, $csomopont));
+            foreach ($csomopont->getLapertekek() as $lapertek) 
+            {
+                $csomopont->setVizsgalatbanHasznaltLapertek($lapertek);
+                $ujertek= $this->Fakereses($this->Array_hozzafuz($torzs, $csomopont));
+                $ertek=Kezertek::NagyobbKezertek($ertek, $ujertek);
+            }
         }
         return $ertek;
     }
@@ -67,16 +75,9 @@ class Kez extends Kartyakeszlet implements iKezTemplate
     }
     
     
-    private function Ertekel(array $torzs):string
+    private function Ertekel(array $torzs): Kezertek
     {
-        $eredmeny="";
-        foreach ($torzs as $lap) 
-        {
-            $eredmeny.=($eredmeny==""?"":", ");
-            $eredmeny.=$lap->Leiras();
-        }
-        echo"$eredmeny\n";
-        return"";
+        return (new Szabaly())->KezErtekKereses($torzs);
     }
     
     

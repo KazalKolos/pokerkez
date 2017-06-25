@@ -21,6 +21,7 @@ class Pakli  extends Kartyakeszlet implements iPakliTemplate
             throw new Exception("A jatekban legalabb 1, legfeljebb 10 csomag vehet reszt!");
         }
         $this->csomagszam=$csomagszam;
+        Lap::SzamlaloNullazas();
         $this->PakliFeltoltese();
     }
     

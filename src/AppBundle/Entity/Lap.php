@@ -24,16 +24,31 @@ class Lap implements iLapTemplate
      */
     private $lapertekek;
     
-    /**
+    /** 
+     * Egyedi lapid - Ha több paklival játszunk, akkor 
+     * a nev és a szin alapján nem lehet egyertelmuen megkülönböztetni
+     * ket lepot egymástol
+     * 
      * @lapid int
      */
     private $lapid;
     
-    /**
-     * @lapid int
+    /** 
+     * Statikus változó egyedi lapid eloallitasahoz
+     * 
+     * @szamlalo int
      */
     private static $szamlalo=0;
 
+    
+    /** 
+     * Ezt a property-t csak a kéz értékének 
+     * vizsgálata során használjuk. Az Ász aktuális 
+     * értékének tárolására szolgál.
+     * 
+     * @vizsgalatbanHasznaltLapertek int
+     */
+    private $vizsgalatbanHasznaltLapertek;
     
     function __construct(string $szin, string $nev)
     {
@@ -75,6 +90,17 @@ class Lap implements iLapTemplate
     }
     
     
+    public function getVizsgalatbanHasznaltLapertek():int
+    {
+        return $this->vizsgalatbanHasznaltLapertek;
+    }
+    
+    public function setVizsgalatbanHasznaltLapertek(int $ertek)
+    {
+        $this->vizsgalatbanHasznaltLapertek = $ertek;
+        return $this;
+    }
+    
     
     public function getLapertekek():array
     {
@@ -87,7 +113,7 @@ class Lap implements iLapTemplate
     }
     
     
-    public function Leiras():string
+    public function Leiras(bool $rovid=false):string
     {
         $eredmeny="";
         
@@ -96,8 +122,19 @@ class Lap implements iLapTemplate
             $eredmeny.=($eredmeny!="" ? ", " : "");
             $eredmeny.=(string)$ertek;
         }
-        return "$this->lapid";
-        return "$this->lapid: $this->szin $this->nev ($eredmeny)";
+        if($rovid){return "$this->lapid($this->vizsgalatbanHasznaltLapertek)";}
+        return "$this->szin $this->nev";
+    }
+    
+    public static function LapsorLeiras(array $lapsor):string
+    {
+        $eredmeny="";
+        foreach ($lapsor as $lap) 
+        {
+            $eredmeny.=($eredmeny==""?"":", ");
+            $eredmeny.=$lap->Leiras();
+        }
+        return "\n".$eredmeny."\n";
     }
     
     
@@ -167,8 +204,29 @@ class Lap implements iLapTemplate
         return ($this->szin==$paramLap->szin && $this->nev==$paramLap->nev);
     }
     
+    public function EgyformaSzin(Lap $paramLap): bool
+    {
+        return ($this->szin==$paramLap->szin);
+    }
+    
+    
+    public function EgyformaErtek(Lap $paramLap): bool
+    {
+        return ($this->vizsgalatbanHasznaltLapertek==$paramLap->vizsgalatbanHasznaltLapertek);
+    }    
+    
+    public function AParameterlapErtekeEggyelNagyobb(Lap $paramLap): bool
+    {
+        return ($paramLap->vizsgalatbanHasznaltLapertek==$this->vizsgalatbanHasznaltLapertek+1);
+    }
+    
     private static function getSzamlalo():int
     {
         return self::$szamlalo++;
+    }
+    
+    public static function SzamlaloNullazas()
+    {
+        self::$szamlalo=0;
     }
 }
