@@ -12,8 +12,42 @@ use AppBundle\Entity\Pakli;
  */
 class Kartyakombinacio implements iKartyakombinacioTemplate
 {
+    /**
+     * Ez a property tarolja a kombinacio nevet
+     * pl: Royal Flush
+     * 
+     * @nev string
+     */
     private $nev;
+    
+    
+    /**
+     * Ez a property tárolja a kombinació értékét
+     * 1: magas lap
+     * 10: Royal Flush
+     * 
+     * @ertek int 
+     */
     private $ertek;
+    
+    
+    /**
+     * Ebben a tömbben taroljuk a kombináció szabályát
+     * A tömb felépítése:
+     * Array(5)=
+     * [
+     *      Array(2)=['nevkod','szinkod'],
+     *      Array(2)=['nevkod','szinkod'],
+     *      Array(2)=['nevkod','szinkod'],
+     *      Array(2)=['nevkod','szinkod'],
+     *      Array(2)=['nevkod','szinkod'],
+     * ];
+     * A tömb x. eleme a lapsorozat x. elemére vonatkozó szabályt tartalmazza
+     * A nevkod és a szinkod tartalmát, szintaktikáját lentebb részletezem.
+     * 
+     * @szabaly array of string arrays
+     * 
+     */
     private $szabaly;
     
     /*
@@ -37,23 +71,40 @@ class Kartyakombinacio implements iKartyakombinacioTemplate
      */
     function __construct(string $nev, int $ertek, $leiras) 
     {
-        
         $this->nev=$nev;
         $this->ertek=$ertek;
         $this->szabaly=$this->Szabalykepzes($leiras);
     }
     
-    public function getNev() 
+    /*
+     * visszaadja a kombinacio nevet
+     */
+    public function getNev() : string
     {
         return $this->nev;
     }
             
-    public function getErtek() 
+    /*
+     * Visszaadja a kombinacio erteket
+     */
+    public function getErtek() :int
     {
         return $this->ertek;
     }
     
-    private function Szabalykepzes(string $leiras)
+    
+    /*
+     * Ezt a függvényt a konstruktor hívja meg
+     * paraméterként a szabály meghatározott szintaktikájú
+     * leirasat adja át. 
+     * A parameter $leiras string 4 ;-t tartalmaz, így 5 részre bontható.
+     * Az öt részt foreach használatával járjuk végig
+     * Az egyes részek egy , mentén két részre bonthatóak. Ez a $paramarr tömb.
+     * A $paramarr tömb 0. elem a szinkodot, 1. eleme a nevkodot tartalmazza.
+     * A függvény eredményként a fenti $szabaly tömb leirasanak megfelelő tömböt
+     * ad vissza, tehát 5 darab kételemű tömböt tartalmazó tömböt.
+     */
+    private function Szabalykepzes(string $leiras):array
     {
         $eredmeny=array();
         foreach (explode(";",$leiras) as $p)
@@ -67,7 +118,10 @@ class Kartyakombinacio implements iKartyakombinacioTemplate
         return $eredmeny;
     }
     
-    private function SzinkodEllenor($szinkod) 
+    /*
+     * a szinkod szintaktikáját ellenorzo methodus
+     */
+    private function SzinkodEllenor(string $szinkod) 
     {
         if ($szinkod!="*" && $szinkod!="=") 
         {
@@ -75,7 +129,10 @@ class Kartyakombinacio implements iKartyakombinacioTemplate
         }
     }
     
-    private function NevkodEllenor($nevkod) 
+    /*
+     * A nevkod szintaktikajat ellenorzo methodus
+     */
+    private function NevkodEllenor(string $nevkod) 
     {
         if ($nevkod!="*" && $nevkod!="=" && $nevkod!="+" && $nevkod!="10") 
         {
@@ -83,6 +140,9 @@ class Kartyakombinacio implements iKartyakombinacioTemplate
         }
     }
     
+    /*
+     * A kombinacio szöveges leirasat adja vissza
+     */
     public function Bemutatas():string
     {
         $eredmeny= "nev: $this->nev, "
@@ -95,14 +155,34 @@ class Kartyakombinacio implements iKartyakombinacioTemplate
         return $eredmeny;
     }
     
+    /*
+     * Ellenorzi, hogy a paraméterként kapott Lap array megfelel-e
+     * a szabály leirasanak
+     */
     public function MegfelelASzabalynak(array $lapsor):bool
     {
-        //echo "\n\n\nLapsor: ".Lap::LapsorLeiras($lapsor);
-        //echo $this->Bemutatas();
-        if($this->szabaly[0]['nevkod']==10 && $lapsor[0]->getVizsgalatbanHasznaltLapertek()!=10)
+        $this->LapsorEllenor($lapsor);
+        
+        /*
+         * Egyedül a Royal Flush esetében van megszabva, hogy a sorozat
+         * 10-es lappal kezdodik
+         * Ennek a feltetelnek a vizsgalata itt tortenik
+         */
+        if($this->szabaly[0]['nevkod']=="10" 
+                && $lapsor[0]->getVizsgalatbanHasznaltLapertek()!=10)
             {return false;}
         
-        for ($i=1;$i<5;$i++)
+        /*
+         * Az alábbi ciklus bejarja a lapokat 1-től 4-ig 
+         * 0-alapu tömb
+         * A 0. lapot nem vizsgalja mert az a Royal Flusht kiveve
+         * mindig bármi lehet.
+         * A soron kovetkezo lapot mindig az elotte allo lappal hasonlitja ossze
+         * Ha az adott lap elbukik a vizsgan, akkor azonnal falsot ad vissza,
+         * hiszen a lapsorozatra ez a kombinacio nem ervenyes
+         * Ha minden lap atmegy a vizsgalaton, akkor true-t ad vissza
+         */
+        for ($i=1;$i<count($this->szabaly);$i++)
         {
             if (!$this->Lapvizsgalat($lapsor[$i-1],$lapsor[$i],$this->szabaly[$i]))
             {
@@ -113,35 +193,52 @@ class Kartyakombinacio implements iKartyakombinacioTemplate
         return true;
     }
     
-    private function Lapvizsgalat(Lap $elozoLap,Lap $ezALap, array $szabaly):bool
+     /*
+     * A lapsort ellenorzo methodus
+     */
+    private function LapsorEllenor(array $lapsor) 
     {
-        //echo"\n".$elozoLap->Leiras().", ".$ezALap->Leiras(). ". Szin: ".$szabaly['szinkod']. ", Ertek: ".$szabaly['nevkod']."\n";
-        
-        if($szabaly['szinkod']=="=" && 
-                !$elozoLap->EgyformaSzin($ezALap))
-            {
-                //echo "Egyforma szin false\n";
-                return false;
-            }
-        
-        if($szabaly['nevkod']=="=" && 
-                !$elozoLap->EgyformaErtek($ezALap))
-            {
-                //echo "Egyforma ertek false\n";
-                return false;
-            }        
-        if($szabaly['nevkod']=="+" && 
-                !$elozoLap->AParameterlapErtekeEggyelNagyobb($ezALap))
-            {
-                //echo "Eggyel nagyobb false\n";
-                return false;
-            }        
-            
-        //Echo "Megfelel a szabalynak.\n"    ;
-        return true;
+        if (count($lapsor)!=5) 
+        {
+            throw new Exception("A laposor tomb nem 5 elemu!");
+        }
     }
     
     
+    /*
+     * Egy lap es a lapra vonatkozo szabaly ellenorzese
+     * 
+     */
+    private function Lapvizsgalat(Lap $elozoLap,Lap $ezALap, array $szabaly):bool
+    {
+       /*
+        * Ha a szinkod '=' akkor az elozo es a jelenlegi lap 
+        * szinenek meg kell egyeznie 
+        */
+        if($szabaly['szinkod']=="=" && 
+                !$elozoLap->EgyformaSzin($ezALap))
+        {return false;}
+        
+        /*
+         * Ha a nevkod "=", akkor az elozo es a jelenlegi lap
+         * ertekenek meg kell egyeznie
+         */
+        if($szabaly['nevkod']=="=" && 
+                !$elozoLap->EgyformaErtek($ezALap))
+        {return false;}        
             
-    
+        
+        /*
+         * Ha a nevkod '+' akkor a jelenlegi lap ertekenek
+         * eggyel nagyobbnak kell lennie, mint az elozo lap erteke
+         */
+        if($szabaly['nevkod']=="+" && 
+                !$elozoLap->AParameterlapErtekeEggyelNagyobb($ezALap))
+        {return false;}
+        
+        /*
+         * Ha idaig eljutott, akkor ez a lap megfelel a szabalynak
+         */
+        return true;
+    }
 }
