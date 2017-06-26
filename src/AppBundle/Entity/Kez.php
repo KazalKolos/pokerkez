@@ -26,14 +26,14 @@ class Kez extends Kartyakeszlet implements iKezTemplate
     }
         
     /*
-     * Elniditja a megfeleo kombinacio kereseset, és visszaadja a leirast
+     * Elinditja a megfeleo kombinacio kereseset, és visszaadja az értéket
      */
-    public function KezErteke():string
+    public function KezErteke():Kezertek
     {
         //$agak= $this->lapok;
         $torzs=array();
         $ertek= $this->FaKereses($torzs);
-        return $ertek->Leiras();
+        return $ertek;
     }
     
     /*

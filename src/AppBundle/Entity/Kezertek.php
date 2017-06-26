@@ -4,28 +4,56 @@ namespace AppBundle\Entity;
 
 use AppBundle\Entity\Lap;
 
+/*
+ * A Kezertek class a kézben lévő kártyák kombinációkeresésének 
+ * visszatérő értékét tárolja
+ * A $kombinacio tarolja azt a kombinációt, mely megfelelt 
+ * a $lapsor tömbben tárolt kártyasorozatnak
+ */
 class Kezertek implements iKezertekTemplate
 {
+     /**
+     * @kombinacio Kartyakombinacio
+     */
     private $kombinacio;
+    
+    /**
+     * @lapsor Lap array
+     */
     private $lapsor;
     
+    /*
+     * Példányosításkor meg kell adni a kombinációt és a lapsort.
+     */
     function __construct(Kartyakombinacio $kombinacio, array $lapsor) 
     {
         $this->kombinacio=$kombinacio;
         $this->lapsor=$lapsor;
     }
     
-       
+    /*
+     * Visszaadja a kombinációt
+     */   
     public function getKombinacio():Kartyakombinacio
     {
         return $this->kombinacio;
     }
     
+    
+    /*
+     * Visszaadja a lapsor tömb kezdő lapját. 
+     * Ennek a lapnak az értéke dönti el, hogy két azonos értékű kombináció
+     * (pl: két póker) közül melyik a győztes
+     */
     public function getMagaslap(): Lap
     {
         return $this->lapsor[0];
     }
     
+    
+    /*
+     * A kombináció szöveges leírását adja vissza.
+     */
     public function Leiras():string
     {
         return Lap::LapsorLeiras($this->lapsor)
@@ -40,11 +68,12 @@ class Kezertek implements iKezertekTemplate
 
 
 
-
+    /*
+     * Statikus függvény!
+     * A parameterkent kapott két Kezerték objektum közül a nagyobbat adja vissza
+     */
     public static function NagyobbKezertek(Kezertek $egyik, Kezertek $masik) : Kezertek
     {
-        if(empty($egyik)) {return $masik;}
-        if(empty($masik)) {return $egyik;}
         if($egyik->kombinacio->getErtek() > $masik->kombinacio->getErtek()){return $egyik;}
         if($egyik->kombinacio->getErtek() < $masik->kombinacio->getErtek()){return $masik;}
         

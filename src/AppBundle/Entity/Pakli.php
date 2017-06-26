@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 use Exception;
-use AppBundle\Entity\iKartyakeszletInterface;
 use AppBundle\Entity\Lap;
 
 class Pakli  extends Kartyakeszlet implements iPakliTemplate
