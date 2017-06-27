@@ -24,7 +24,7 @@ class KezTest extends TestCase
             $pakli= new Pakli($elem['csomag']);
             $kez=Kez::KezFactory($pakli);
             
-            $leiras=$kez->Leiras();
+            $leiras=$kez->Leiras()."\n";
             //echo $leiras;
             $result = $kez->getLapokSzama();
 
@@ -67,8 +67,9 @@ class KezTest extends TestCase
 
         $leiras=$kez->Leiras();
         echo "\n$leiras\n";
-        echo"\n";
-        $kez->KezErteke();
+        $ertek=$kez->KezErteke();
+        echo $ertek->Leiras()."\n";
+        
         $result = $kez->getLapokSzama();
 
         $this->assertEquals(5, $result);

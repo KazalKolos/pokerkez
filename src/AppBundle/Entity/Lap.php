@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 use Exception;
-use AppBundle\Entity\ILapTemplate;
+use AppBundle\Entity\iLapTemplate;
 
 
 /*
@@ -214,11 +214,11 @@ class Lap implements iLapTemplate
         {
             case "Jumbo":
                 return [11];
-            case "Dama":
+            case "Dáma":
                 return [12];
-            case "Kiraly":
+            case "Király":
                 return [13];
-            case "Asz":
+            case "Ász":
                 return [1, 14];
             default:
                 return [(int)$this->nev];
@@ -243,7 +243,7 @@ class Lap implements iLapTemplate
      */
     public static function Szinkeszlet():array
     {
-        return ["Pikk","Treff","Kor","Karo"];
+        return ["Pikk","Treff","Kör","Káró"];
     }
     
     /*
@@ -252,7 +252,7 @@ class Lap implements iLapTemplate
      */
     public static function Nevkeszlet():array
     {
-        return ["2","3","4","5","6","7","8","9","10","Jumbo","Dama","Kiraly","Asz"];
+        return ["2","3","4","5","6","7","8","9","10","Jumbo","Dáma","Király","Ász"];
     }
 
     /*
@@ -287,6 +287,23 @@ class Lap implements iLapTemplate
     public function AParameterlapErtekeEggyelNagyobb(Lap $paramLap): bool
     {
         return ($paramLap->vizsgalatbanHasznaltLapertek==$this->vizsgalatbanHasznaltLapertek+1);
+    }
+    
+    /*
+     * A kártya nevét jpg fájlnévként adja vissza
+     */
+    public function Filename()
+    {
+        $szin= $this->Ekezettelenito($this->szin);
+        $nev=$this->Ekezettelenito($this->nev);
+        return strtolower($szin.$nev.".jpg");
+    }
+    
+    private function Ekezettelenito($subject)
+    {
+        $search= explode(",", "á,é,í,ó,ö,ő,ú,ü,ű,Á,É,Í,Ó,Ö,Ő,Ú,Ü,Ű,");
+        $replace= explode(",", "a,e,i,o,o,o,u,u,u,A,E,I,O,O,O,U,U,U,");
+        return str_replace($search, $replace, $subject);
     }
     
     /*

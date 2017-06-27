@@ -30,7 +30,6 @@ class Kez extends Kartyakeszlet implements iKezTemplate
      */
     public function KezErteke():Kezertek
     {
-        //$agak= $this->lapok;
         $torzs=array();
         $ertek= $this->FaKereses($torzs);
         return $ertek;

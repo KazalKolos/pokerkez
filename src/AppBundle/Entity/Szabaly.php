@@ -77,39 +77,39 @@ class Szabaly implements iSzabalyTemplate
                             'ertek'=>10,
                             'leiras'=>"*,10;=,+;=,+;=,+;=,+" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Straight Flush",
+        $kombinacio[]=[   'nev'=>"straight flush",
                             'ertek'=>9,
                             'leiras'=>"*,*;=,+;=,+;=,+;=,+" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Poker",
+        $kombinacio[]=[   'nev'=>"póker",
                             'ertek'=>8,
                             'leiras'=>"*,*;*,=;*,=;*,=;*,*" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Full",
+        $kombinacio[]=[   'nev'=>"full",
                             'ertek'=>7,
                             'leiras'=>"*,*;*,=;*,=;*,*;*,=" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Flush",
+        $kombinacio[]=[   'nev'=>"flush",
                             'ertek'=>6,
                             'leiras'=>"*,*;=,*;=,*;=,*;=,*" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Sor",
+        $kombinacio[]=[   'nev'=>"sor",
                             'ertek'=>5,
                             'leiras'=>"*,*;*,+;*,+;*,+;*,+" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Drill",
+        $kombinacio[]=[   'nev'=>"drill",
                             'ertek'=>4,
                             'leiras'=>"*,*;*,=;*,=;*,*;*,*" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Ket par",
+        $kombinacio[]=[   'nev'=>"két pár",
                             'ertek'=>3,
                             'leiras'=>"*,*;*,=;*,*;*,=;*,*" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Egy par",
+        $kombinacio[]=[   'nev'=>"pár",
                             'ertek'=>2,
                             'leiras'=>"*,*;*,=;*,*;*,*;*,*" ,
                         ];
-        $kombinacio[]=[   'nev'=>"Magas lap",
+        $kombinacio[]=[   'nev'=>"magas lap",
                             'ertek'=>1,
                             'leiras'=>"*,*;*,*;*,*;*,*;*,*" ,
                         ];

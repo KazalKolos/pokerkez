@@ -57,16 +57,27 @@ class Kezertek implements iKezertekTemplate
     public function Leiras():string
     {
         return Lap::LapsorLeiras($this->lapsor)
-                . "Kez erteke: "
+                . "<br>"
                 .$this->lapsor[0]->getNev()." "
                 .$this->kombinacio->getNev()
                 ."\n";
     }
     
+    /*
+     * A lapsort adja vissza.
+     */
+    public function getLapsor() :array
+    {
+        return $this->lapsor;
+    }
 
-
-
-
+    /*
+     * A kombináció szöveges értékét adja vissza.
+     */
+    public function ErtekNev():string
+    {
+        return $this->lapsor[0]->getNev()." ".$this->kombinacio->getNev();
+    }
 
     /*
      * Statikus függvény!

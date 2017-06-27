@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Pakli;
+use AppBundle\Entity\Kez;
 
 class HuzasController extends Controller
 {
@@ -13,9 +15,17 @@ class HuzasController extends Controller
      */
     public function huzasAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+        $csomagszam=$request->request->get('csomagszam');
+        
+        $pakli= new Pakli($csomagszam);
+        $kez=Kez::KezFactory($pakli);
+        $ertek=$kez->KezErteke();
+        
+        
+        return $this->render('huzas/huzas.html.twig', [
+            'kez' => $kez,
+            'ertek'  => $ertek,  
+            'csomagszam'=>$csomagszam,
         ]);
     }
 }

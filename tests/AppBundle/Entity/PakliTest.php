@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Pakli;
-use AppBundle\Entity\Lap;
 use PHPUnit\Framework\TestCase;
 
 class PakliTest extends TestCase

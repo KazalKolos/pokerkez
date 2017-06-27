@@ -1,0 +1,51 @@
+{% extends 'default/index.html.twig' %}
+
+{% block stylesheets %}
+    .Row
+    {
+        display: table;
+        height: 120px;
+    }
+    .Column
+    {
+        display: table-cell;
+        border-width: 1px; 
+        border-style: solid; 
+        width: 87px; 
+        float:left;
+        padding: 2px;
+    }
+{% endblock %}
+{% block fotartalom %}
+    <h2>A kihúzott lapok:</h2>
+    <table style="text-align: center; margin-left: auto; margin-right:  auto;">
+        <tr>
+            {% for lap in kez.getMindenLap() %}
+                <td>{{lap.Leiras()}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for lap in kez.getMindenLap() %}
+                <td style="border: 1px solid black;">
+                    <img src="http://varazsbetu.hu/var/images/lapok/{{lap.Filename()}}">
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+    <h2>A kéz értéke</h2>
+        <table style="text-align: center;margin-left: auto; margin-right:  auto;">
+        <tr>
+            {% for lap in ertek.Lapsor() %}
+                <td>{{lap.Leiras()}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for lap in ertek.Lapsor() %}
+                <td style="border: 1px solid black;">
+                    <img src="http://varazsbetu.hu/var/images/lapok/{{lap.Filename()}}">
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+    <h1>{{ertek.ErtekNev()|raw}}</h1>
+{% endblock %}

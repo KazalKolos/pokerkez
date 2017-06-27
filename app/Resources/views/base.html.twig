@@ -55,8 +55,8 @@
         }
         body {  font: 18px/1.5 Times new roman; }
         h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
-        h1 { font-size: 36px; }
-        h2 { font-size: 21px; margin-bottom: 1em; }
+        h1 { font-size: 36px; text-align: center }
+        h2 { font-size: 21px; margin-top: 1em; }
         p { margin: 0 0 1em 0; }
         a { color: #0000F0; }
         a:hover { text-decoration: none; }
@@ -82,7 +82,27 @@
     </head>
     <body>
         <header id="pageHeader"><h1>Pókerkéz</h1></header>
-      <article id="mainArticle"> {% block body %}{% endblock %}</article>
+      <article id="mainArticle"> 
+      {% block body %}
+      <div id="wrapper">
+        <div id="container">
+            <div id="welcome">
+                {% block fotartalom %}<h1><span>Üdvözöllek</span>a Pókerkéz alkalmazásban</h1>{% endblock %}
+
+                <p>
+                    A gomb lenyomásával kérhetsz új leosztást.
+                </p>
+            
+                <form action="{{path('huzas')}}" method="post">
+                    <p>Hány kártyacsomagból álljon a pakli? Írd be a választ!</p>
+                    <p style="text-align:center"><input style="text-align: center;" type="number" name="csomagszam" value="{{csomagszam}}"></p>
+                    <p style="text-align:center"><input type="submit" value="Húzás"></p>
+                </form>    
+            </div>
+
+        </div>
+    </div>
+      {% endblock %}</article>
       <nav id="mainNav"> {% block nav %}Nav{% endblock %}</nav>
       <div id="siteAds"> {% block ads %}Ads{% endblock %}</div>
       <footer id="pageFooter">
